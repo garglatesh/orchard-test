@@ -54,6 +54,7 @@
 
             <!--end banner content-->
             <div style='margin-left:40px;margin-top:100px;'>
+              <strong>Given any inputted string, determine if the string is a palindrome.</strong>
              <form method="post" action="">
             <input type="text" value="" name="inpString" id="inpString" placeholder="Enter String"/>
              {{ csrf_field() }}

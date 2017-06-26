@@ -25,15 +25,17 @@ class AdminController extends Controller {
         $data = $request->all();
         $input_string = trim(strtolower($data['inpString']));
         $input_string = preg_replace("/[^a-z0-9.]+/i", "", $input_string);
-        if (empty($input_string)) {
+        
+        if ($input_string == '' || strlen($input_string)== 0) {
             $output = "UNDETERMINED";
+        }else{
+            // check logic
+            $reverse_string = strrev($input_string);
+            if ($input_string == $reverse_string) // compare if  the original word is same as the reverse of the same word
+                $output = "TRUE";
+            else
+                $output = "FALSE";
         }
-        // check logic
-        $reverse_string = strrev($input_string);
-        if ($input_string == $reverse_string) // compare if  the original word is same as the reverse of the same word
-            $output = "TRUE";
-        else
-            $output = "FALSE";
         return view('admin.is-palindrome', ['output' => $output]);
     }
 
@@ -50,29 +52,30 @@ class AdminController extends Controller {
         $data = $request->all();
         $input_string = trim(strtolower($data['inpString']));
         $input_string = preg_replace("/[^a-z0-9.]+/i", "", $input_string);
-        if (empty($input_string)) {
+        if ($input_string == '' || strlen($input_string)== 0) {
             $output = "UNDETERMINED";
-        }
-        // check logic
-        $string_array = str_split($input_string);
-
-        if (count($string_array) == array_unique($string_array)) // compare if  the original word is same as the reverse of the same word
-            $output = "HETEROGRAM";
-        else {
-            foreach ($string_array as $char) {
-                if (is_numeric($char)) {
-                    return false;
+        }else{
+            // check logic
+            $string_array = str_split($input_string);
+           
+            if (count($string_array) == count(array_unique($string_array))) // compare if  the original word is same as the reverse of the same word
+                $output = "HETEROGRAM";
+            else {
+                foreach ($string_array as $char) {
+                    if (is_numeric($char)) {
+                        continue;
+                    }
+                    if (!isset($sequence[$char])) {
+                        $sequence[$char] = 1;
+                    } else {
+                        $sequence[$char] ++;
+                    }
                 }
-                if (!isset($sequence[$char])) {
-                    $sequence[$char] = 1;
-                } else {
-                    $sequence[$char] ++;
+                if (count(array_flip($sequence)) == 1) {
+                    $output = "ISOGRAM";
                 }
+                $output = "NOTAGRAM";
             }
-            if (count(array_flip($sequence)) == 1) {
-                $output = "ISOGRAM";
-            }
-            $output = "NOTAGRAM";
         }
 
         return view('admin.is-heterogram', ['output' => $output]);

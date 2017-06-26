@@ -54,6 +54,8 @@
 
             <!--end banner content-->
             <div style='margin-left:40px;margin-top:100px;'>
+               
+                 <strong> Insta-gram </strong>
              <form method="post" action="">
             <input type="text" value="" name="inpString" id="inpString" placeholder="Enter String"/>
              {{ csrf_field() }}
